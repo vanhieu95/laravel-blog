@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $posts = Post::all();
+
+    return view('posts', [
+        'posts' => $posts
+    ]);
+})->name('posts.index');
+
+Route::get('posts/{post}', function ($slug) {
+    // Find a post by its slug and pass it to a view called "post"
+    return view('post', ['post' => Post::findOrFail($slug)]);
+})->where('post', '[A-z0-9_\-]+')->name('posts.show');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 use Illuminate\Support\Str;
 
-class Post
+class PostOld
 {
     public function __construct(
         public string $title,

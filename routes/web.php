@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Category;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -16,29 +16,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $posts = Post::latest()->with(['author', 'category'])->get();
-    // $posts = Post::all();
+Route::get('/', [PostController::class, 'index'])->name('posts.index');
+Route::get('posts/{post}', [PostController::class, 'show'])->where('post', '[A-z0-9_\-]+')->name('posts.show');
 
-    return view('posts', [
-        'posts' => $posts
-    ]);
-})->name('posts.index');
+//Route::get('categories/{category:slug}', function (Category $category) {
+//    return view('posts', [
+//        'posts' => $category->posts->load(['author', 'category']),
+//        'currentCategory' => $category,
+//        'categories' => Category::all()
+//    ]);
+//})->name('categories.posts');
 
-Route::get('posts/{post}', function (Post $post) {
-    // Route::get('posts/{post:slug}', function (Post $post) { // Post::where('slug', $post)->firstOrFail();
-    // Find a post by its slug and pass it to a view called "post"
-    return view('post', ['post' => $post]);
-})->where('post', '[A-z0-9_\-]+')->name('posts.show');
-
-Route::get('categories/{category:slug}', function (Category $category) {
-    return view('posts', [
-        'posts' => $category->posts->load(['author', 'category'])
-    ]);
-})->name('categories.posts');
-
-Route::get('authors/{author:username}', function (User $author) {
-    return view('posts', [
-        'posts' => $author->posts->load(['author', 'category'])
-    ]);
-})->name('authors.posts');
+//Route::get('authors/{author:username}', function (User $author) {
+//    return view('posts', [
+//        'posts' => $author->posts->load(['author', 'category']),
+//        'categories' => Category::all()
+//    ]);
+//})->name('authors.posts');

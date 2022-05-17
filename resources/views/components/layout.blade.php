@@ -14,9 +14,21 @@
             </a>
         </div>
 
-        <div class="mt-8 md:mt-0">
-            <a href="/" class="text-xs font-bold uppercase">Home Page</a>
+        <div class="mt-8 md:mt-0 flex items-center">
+            @auth
+                <span class="text-xs font-bold uppercase">Welcome, {{ auth()->user()->name }}!</span>
+                {{-- <a href="{{ route('register.create') }}" class="text-xs font-bold uppercase">Register</a>--}}
 
+                <form method="POST" action="{{ route('session.logout') }}"
+                      class="text-xs font-semibold text-blue-500 ml-6 mr-3">
+                    @csrf
+
+                    <button type="submit">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('register.create') }}" class="text-xs font-bold uppercase">Register</a>
+                <a href="{{ route('session.login') }}" class="text-xs ml-6 font-bold uppercase">Login</a>
+            @endauth
             <a href="#" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
                 Subscribe for Updates
             </a>
@@ -53,4 +65,7 @@
         </div>
     </footer>
 </section>
+
+<x-flash/>
+
 </body>

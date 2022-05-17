@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::get('posts/{post}', [PostController::class, 'show'])->where('post', '[A-z0-9_\-]+')->name('posts.show');
+
+Route::get('register', [RegisterController::class, 'create'])->middleware('guest')->name('register.create');
+Route::post('register', [RegisterController::class, 'store'])->middleware('guest')->name('register.store');
+
+Route::get('login', [SessionController::class, 'create'])->middleware('guest')->name('session.login');
+Route::post('login', [SessionController::class, 'store'])->middleware('guest')->name('session.store');
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth')->name('session.logout');
 
 //Route::get('categories/{category:slug}', function (Category $category) {
 //    return view('posts', [

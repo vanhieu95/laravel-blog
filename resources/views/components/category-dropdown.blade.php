@@ -1,5 +1,5 @@
 <x-dropdown>
-    <x-slot name="trigger">
+    <x-slot:trigger>
         <button class="py-2 pl-3 pr-10 text-sm font-semibold w-full lg:w-32 text-left inline-flex">
             {{ isset($currentCategory) ? ucwords($currentCategory->name) : 'Categories' }}
             <svg class="transform -rotate-90 absolute pointer-events-none" style="right: 12px;" width="22"

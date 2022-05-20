@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
 Route::get('posts/{post}', [PostController::class, 'show'])->where('post', '[A-z0-9_\-]+')->name('posts.show');
+Route::post('posts/{post}/comments', [PostCommentsController::class, 'store'])->middleware('auth')->name('posts.comments.store');
 
 Route::get('register', [RegisterController::class, 'create'])->middleware('guest')->name('register.create');
 Route::post('register', [RegisterController::class, 'store'])->middleware('guest')->name('register.store');

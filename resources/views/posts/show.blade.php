@@ -5,7 +5,8 @@
                 <img src="{{ asset('images/illustration-1.png') }}" alt="" class="rounded-xl">
 
                 <p class="mt-4 block text-gray-400 text-xs">
-                    Published <time>{{ $post->created_at->diffForHumans() }}</time>
+                    Published
+                    <time>{{ $post->created_at->diffForHumans() }}</time>
                 </p>
 
                 <div class="flex items-center lg:justify-center text-sm mt-4">
@@ -34,7 +35,7 @@
                         Back to Posts
                     </a>
 
-                    <x-post-category :category="$post->category" />
+                    <x-post-category :category="$post->category"/>
                 </div>
 
                 <h1 class="font-bold text-3xl lg:text-4xl mb-10">
@@ -45,6 +46,47 @@
                     {!! $post->body !!}
                 </div>
             </div>
+
+            <section class="col-span-8 col-start-5 mt-10 space-y-6">
+                @auth
+                    <x-panel>
+                        <form method="POST" action="{{ route('posts.comments.store', [$post->slug]) }}">
+                            @csrf
+                            <header class="flex items-center">
+                                <img src="https://i.pravatar.cc/60?u={{ auth()->id() }}" alt="" width="40" height="40"
+                                     class="rounded-full">
+                                <h2 class="ml-4">Want to participate?</h2>
+                            </header>
+
+                            <div class="mt-6">
+                                <textarea name="body" class="w-full text-sm focus:outline-none focus:ring" rows="5"
+                                          placeholder="Quick, thing of something to says" required>
+                                </textarea>
+                                @error('body')
+                                    <span class="text-xs text-red-500">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="flex justify-end mt-6 pt-6 border-t border-gray-200">
+                                <button type="submit"
+                                        class="bg-blue-500 text-white uppercase font-semibold text-xs py-2 px-10 rounded-2xl hover:bg-blue-600">
+                                    Post
+                                </button>
+                            </div>
+                        </form>
+                    </x-panel>
+                @else
+                    <p class="font-semibold">
+                        <a href="{{route('register.create')}}" class="underline hover:text-red-400">Register</a> or
+                        <a href="{{route('session.login')}}" class="underline hover:text-red-400">Log In</a> to leave a
+                        comment.
+                    </p>
+                @endauth
+
+                @foreach($post->comments as $comment)
+                    <x-post-comment :comment="$comment"/>
+                @endforeach
+            </section>
         </article>
     </main>
 </x-layout>
